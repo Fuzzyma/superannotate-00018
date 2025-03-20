@@ -2,7 +2,6 @@
 
 import { recipeSchema, type Recipe, type RecipeFormData } from "@/types/recipe";
 import { CATEGORIES, useRecipes } from "@/context/recipe-context";
-import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
