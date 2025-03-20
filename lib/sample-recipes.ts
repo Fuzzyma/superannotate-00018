@@ -1,10 +1,11 @@
-import type { Recipe } from "@/types/recipe"
+import type { Recipe } from "@/types/recipe";
 
 export const sampleRecipes: Recipe[] = [
   {
     id: "1",
     title: "Classic Spaghetti Carbonara",
-    description: "A traditional Italian pasta dish with eggs, cheese, pancetta, and black pepper.",
+    description:
+      "A traditional Italian pasta dish with eggs, cheese, pancetta, and black pepper.",
     ingredients: [
       "350g spaghetti",
       "150g pancetta or guanciale, diced",
@@ -24,18 +25,17 @@ export const sampleRecipes: Recipe[] = [
       "Serve immediately with extra grated cheese and black pepper.",
     ],
     category: "Italian",
-    prepTime: 10,
     cookTime: 15,
     servings: 4,
     isFavorite: false,
-    image: "/placeholder.svg?height=300&width=400",
     createdAt: 1647984000000,
     updatedAt: 1647984000000,
   },
   {
     id: "2",
     title: "Chicken Tikka Masala",
-    description: "Grilled chunks of chicken enveloped in a creamy spiced tomato sauce.",
+    description:
+      "Grilled chunks of chicken enveloped in a creamy spiced tomato sauce.",
     ingredients: [
       "800g boneless chicken thighs, cut into chunks",
       "2 cups plain yogurt",
@@ -62,11 +62,9 @@ export const sampleRecipes: Recipe[] = [
       "Garnish with cilantro and serve with rice or naan bread.",
     ],
     category: "Indian",
-    prepTime: 20,
     cookTime: 40,
     servings: 6,
     isFavorite: true,
-    image: "/placeholder.svg?height=300&width=400",
     createdAt: 1648070400000,
     updatedAt: 1648070400000,
   },
@@ -94,11 +92,9 @@ export const sampleRecipes: Recipe[] = [
       "Season with salt, pepper, red pepper flakes, and herbs if desired.",
     ],
     category: "Breakfast",
-    prepTime: 5,
     cookTime: 5,
     servings: 1,
     isFavorite: false,
-    image: "/placeholder.svg?height=300&width=400",
     createdAt: 1648156800000,
     updatedAt: 1648156800000,
   },
@@ -129,11 +125,9 @@ export const sampleRecipes: Recipe[] = [
       "Assemble burgers with your favorite toppings and condiments.",
     ],
     category: "American",
-    prepTime: 15,
     cookTime: 10,
     servings: 4,
     isFavorite: true,
-    image: "/placeholder.svg?height=300&width=400",
     createdAt: 1648243200000,
     updatedAt: 1648243200000,
   },
@@ -166,13 +160,10 @@ export const sampleRecipes: Recipe[] = [
       "Garnish with sesame seeds and serve over rice or noodles.",
     ],
     category: "Asian",
-    prepTime: 15,
     cookTime: 10,
     servings: 4,
     isFavorite: false,
-    image: "/placeholder.svg?height=300&width=400",
     createdAt: 1648329600000,
     updatedAt: 1648329600000,
   },
-]
-
+];

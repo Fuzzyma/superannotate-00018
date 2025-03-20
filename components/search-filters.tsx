@@ -1,15 +1,27 @@
-"use client"
+"use client";
 
-import { useRecipes } from "@/context/recipe-context"
-import { Input } from "@/components/ui/input"
-import { Search } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useRecipes } from "@/context/recipe-context";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function SearchFilters() {
-  const { searchTerm, setSearchTerm, selectedCategory, setSelectedCategory, categories } = useRecipes()
+  const {
+    searchTerm,
+    setSearchTerm,
+    selectedCategory,
+    setSelectedCategory,
+    categories,
+  } = useRecipes();
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4">
+    <div className="flex flex-col sm:flex-row gap-4 grow">
       <div className="relative flex-grow">
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
@@ -34,6 +46,5 @@ export function SearchFilters() {
         </SelectContent>
       </Select>
     </div>
-  )
+  );
 }
-

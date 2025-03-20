@@ -3,7 +3,7 @@
 import { recipeSchema, type Recipe, type RecipeFormData } from "@/types/recipe";
 import { CATEGORIES, useRecipes } from "@/context/recipe-context";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -47,10 +47,9 @@ const defaultRecipe: RecipeFormData = {
   ingredients: [""],
   instructions: [""],
   category: "Breakfast",
-  prepTime: 0,
   cookTime: 0,
   servings: 1,
-  image: "/placeholder.svg?height=300&width=400",
+  image: "",
 };
 
 export function RecipeModal({
@@ -61,13 +60,13 @@ export function RecipeModal({
 }: RecipeModalProps) {
   const { addRecipe, updateRecipe } = useRecipes();
 
-  const [ingredients, setIngredients] = useState<string[]>(
-    recipe?.ingredients || [""]
-  );
+  // const [ingredients, setIngredients] = useState<string[]>(
+  //   recipe?.ingredients || [""]
+  // );
 
-  const [instructions, setInstructions] = useState<string[]>(
-    recipe?.instructions || [""]
-  );
+  // const [instructions, setInstructions] = useState<string[]>(
+  //   recipe?.instructions || [""]
+  // );
 
   const form = useForm<RecipeFormData>({
     resolver: zodResolver(recipeSchema),
@@ -77,68 +76,44 @@ export function RecipeModal({
             title: recipe.title,
             description: recipe.description,
             category: recipe.category,
-            prepTime: recipe.prepTime,
             cookTime: recipe.cookTime,
             servings: recipe.servings,
             image: recipe.image,
             ingredients: recipe.ingredients,
             instructions: recipe.instructions,
           }
-        : defaultRecipe,
+        : async () => defaultRecipe,
   });
 
-  const handleAddIngredient = () => {
-    setIngredients([...ingredients, ""]);
-  };
+  const {
+    fields: ingredients,
+    append: handleAddIngredient,
+    remove: handleRemoveIngredient,
+  } = useFieldArray({
+    name: "ingredients" as never,
+    control: form.control,
+  });
 
-  const handleRemoveIngredient = (index: number) => {
-    if (ingredients.length > 1) {
-      const newIngredients = [...ingredients];
-      newIngredients.splice(index, 1);
-      setIngredients(newIngredients);
-    }
-  };
-
-  const handleIngredientChange = (index: number, value: string) => {
-    const newIngredients = [...ingredients];
-    newIngredients[index] = value;
-    setIngredients(newIngredients);
-  };
-
-  const handleAddInstruction = () => {
-    setInstructions([...instructions, ""]);
-  };
-
-  const handleRemoveInstruction = (index: number) => {
-    if (instructions.length > 1) {
-      const newInstructions = [...instructions];
-      newInstructions.splice(index, 1);
-      setInstructions(newInstructions);
-    }
-  };
-
-  const handleInstructionChange = (index: number, value: string) => {
-    const newInstructions = [...instructions];
-    newInstructions[index] = value;
-    setInstructions(newInstructions);
-  };
+  const {
+    fields: instructions,
+    append: handleAddInstruction,
+    remove: handleRemoveInstruction,
+  } = useFieldArray({
+    name: "instructions" as never,
+    control: form.control,
+  });
 
   const onSubmit = (data: RecipeFormData) => {
-    // Include the current ingredients and instructions arrays
-    const recipeData = {
-      ...data,
-      ingredients,
-      instructions,
-    };
-
     if (mode === "add") {
-      addRecipe(recipeData);
+      addRecipe(data);
     } else if (mode === "edit" && recipe) {
       updateRecipe({
         ...recipe,
-        ...recipeData,
+        ...data,
       });
     }
+
+    form.reset();
 
     onClose();
   };
@@ -164,7 +139,6 @@ export function RecipeModal({
                 <FormField
                   control={form.control}
                   name="title"
-                  rules={{ required: "Title is required" }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Recipe Title</FormLabel>
@@ -179,7 +153,6 @@ export function RecipeModal({
                 <FormField
                   control={form.control}
                   name="description"
-                  rules={{ required: "Description is required" }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Description</FormLabel>
@@ -197,7 +170,6 @@ export function RecipeModal({
                 <FormField
                   control={form.control}
                   name="category"
-                  rules={{ required: "Category is required" }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Category</FormLabel>
@@ -223,40 +195,10 @@ export function RecipeModal({
                   )}
                 />
 
-                <div className="grid grid-cols-3 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="prepTime"
-                    rules={{
-                      required: "Required",
-                      min: { value: 0, message: "Must be positive" },
-                    }}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Prep Time (min)</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            {...field}
-                            onChange={(e) =>
-                              field.onChange(
-                                Number.parseInt(e.target.value) || 0
-                              )
-                            }
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
+                <div className="grid grid-cols-2 gap-4 items-start">
                   <FormField
                     control={form.control}
                     name="cookTime"
-                    rules={{
-                      required: "Required",
-                      min: { value: 0, message: "Must be positive" },
-                    }}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Cook Time (min)</FormLabel>
@@ -264,9 +206,10 @@ export function RecipeModal({
                           <Input
                             type="number"
                             {...field}
+                            min={0}
                             onChange={(e) =>
                               field.onChange(
-                                Number.parseInt(e.target.value) || 0
+                                Number.parseInt(e.target.value) || ""
                               )
                             }
                           />
@@ -279,10 +222,6 @@ export function RecipeModal({
                   <FormField
                     control={form.control}
                     name="servings"
-                    rules={{
-                      required: "Required",
-                      min: { value: 1, message: "Min 1 serving" },
-                    }}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Servings</FormLabel>
@@ -290,9 +229,10 @@ export function RecipeModal({
                           <Input
                             type="number"
                             {...field}
+                            min={1}
                             onChange={(e) =>
                               field.onChange(
-                                Number.parseInt(e.target.value) || 1
+                                Number.parseInt(e.target.value) || ""
                               )
                             }
                           />
@@ -326,38 +266,59 @@ export function RecipeModal({
                   <FormLabel htmlFor="ingredients" className="block mb-2">
                     Ingredients
                   </FormLabel>
+
                   <div className="space-y-2">
-                    {ingredients.map((ingredient, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <Input
-                          id={
-                            index === 0 ? "ingredients" : `ingredient-${index}`
-                          }
-                          value={ingredient}
-                          onChange={(e) =>
-                            handleIngredientChange(index, e.target.value)
-                          }
-                          placeholder={`Ingredient ${index + 1}`}
-                        />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleRemoveIngredient(index)}
-                          disabled={ingredients.length <= 1}
-                        >
-                          <X className="h-4 w-4" />
-                          <span className="sr-only">Remove</span>
-                        </Button>
-                      </div>
+                    {ingredients.map((field, index) => (
+                      <FormField
+                        control={form.control}
+                        name={`ingredients.${index}`}
+                        key={field.id}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <div className="flex items-center gap-2">
+                                <Input
+                                  {...field}
+                                  placeholder={`Ingredient ${index + 1}`}
+                                />
+                                {ingredients.length <= 1 || (
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() =>
+                                      handleRemoveIngredient(index)
+                                    }
+                                    disabled={ingredients.length <= 1}
+                                  >
+                                    <X className="h-4 w-4" />
+                                    <span className="sr-only">Remove</span>
+                                  </Button>
+                                )}
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     ))}
                   </div>
+
+                  {form.formState.errors.ingredients?.root && (
+                    <p
+                      data-slot="form-message"
+                      className={"text-destructive text-sm"}
+                    >
+                      {form.formState.errors.ingredients?.root.message}
+                    </p>
+                  )}
+
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     className="mt-2"
-                    onClick={handleAddIngredient}
+                    onClick={() => handleAddIngredient("")}
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     Add Ingredient
@@ -369,42 +330,57 @@ export function RecipeModal({
                     Instructions
                   </FormLabel>
                   <div className="space-y-2">
-                    {instructions.map((instruction, index) => (
-                      <div key={index} className="flex items-start gap-2">
-                        <div className="mt-2 mr-1 text-sm text-muted-foreground">
-                          {index + 1}.
-                        </div>
-                        <Textarea
-                          id={
-                            index === 0
-                              ? "instructions"
-                              : `instruction-${index}`
-                          }
-                          value={instruction}
-                          onChange={(e) =>
-                            handleInstructionChange(index, e.target.value)
-                          }
-                          placeholder={`Step ${index + 1}`}
-                        />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleRemoveInstruction(index)}
-                          disabled={instructions.length <= 1}
-                        >
-                          <X className="h-4 w-4" />
-                          <span className="sr-only">Remove</span>
-                        </Button>
-                      </div>
+                    {instructions.map((field, index) => (
+                      <FormField
+                        control={form.control}
+                        name={`instructions.${index}`}
+                        key={field.id}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <div className="flex items-center gap-2">
+                                <Textarea
+                                  {...field}
+                                  placeholder={`Instruction ${index + 1}`}
+                                />
+                                {instructions.length <= 1 || (
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() =>
+                                      handleRemoveInstruction(index)
+                                    }
+                                    disabled={instructions.length <= 1}
+                                  >
+                                    <X className="h-4 w-4" />
+                                    <span className="sr-only">Remove</span>
+                                  </Button>
+                                )}
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     ))}
                   </div>
+
+                  {form.formState.errors.instructions?.root && (
+                    <p
+                      data-slot="form-message"
+                      className={"text-destructive text-sm"}
+                    >
+                      {form.formState.errors.instructions?.root.message}
+                    </p>
+                  )}
+
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     className="mt-2"
-                    onClick={handleAddInstruction}
+                    onClick={() => handleAddInstruction("")}
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     Add Step

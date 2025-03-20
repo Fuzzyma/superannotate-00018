@@ -20,7 +20,6 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          <AddRecipeButton />
         </div>
       </div>
 
@@ -30,13 +29,19 @@ export default function Home() {
           <TabsTrigger value="favorites">Favorites</TabsTrigger>
         </TabsList>
         <TabsContent value="all" className="space-y-4">
-          <SearchFilters />
+          <div className="flex flex-row gap-4 w-full">
+            <SearchFilters />
+            <AddRecipeButton />
+          </div>
           <Suspense fallback={<LoadingState />}>
             <RecipeList showFavoritesOnly={false} />
           </Suspense>
         </TabsContent>
         <TabsContent value="favorites" className="space-y-4">
-          <SearchFilters />
+          <div className="flex flex-row gap-4  w-full">
+            <SearchFilters />
+            <AddRecipeButton />
+          </div>
           <Suspense fallback={<LoadingState />}>
             <RecipeList showFavoritesOnly={true} />
           </Suspense>

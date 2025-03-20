@@ -3,7 +3,7 @@
 import { useRecipes } from "@/context/recipe-context";
 import { useEffect, useState } from "react";
 import type { Recipe } from "@/types/recipe";
-import RecipeCard2 from "./recipe-card2";
+import RecipeCard from "./recipe-card";
 
 interface RecipeListProps {
   showFavoritesOnly: boolean;
@@ -59,7 +59,7 @@ export default function RecipeList({ showFavoritesOnly }: RecipeListProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
       {filteredRecipes.map((recipe) => (
-        <RecipeCard2 key={recipe.id} recipe={recipe} />
+        <RecipeCard key={recipe.id} recipe={recipe} />
       ))}
     </div>
   );
