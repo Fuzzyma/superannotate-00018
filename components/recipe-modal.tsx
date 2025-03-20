@@ -59,11 +59,7 @@ export function RecipeModal({
   onClose,
   mode,
 }: RecipeModalProps) {
-  const {
-    addRecipe,
-    updateRecipe,
-    categories: existingCategories,
-  } = useRecipes();
+  const { addRecipe, updateRecipe } = useRecipes();
 
   const [ingredients, setIngredients] = useState<string[]>(
     recipe?.ingredients || [""]

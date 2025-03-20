@@ -1,7 +1,6 @@
 "use client";
 
 import { useRecipes } from "@/context/recipe-context";
-import RecipeCard from "./recipe-card";
 import { useEffect, useState } from "react";
 import type { Recipe } from "@/types/recipe";
 import RecipeCard2 from "./recipe-card2";

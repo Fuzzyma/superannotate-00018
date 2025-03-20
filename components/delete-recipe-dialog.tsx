@@ -40,8 +40,8 @@ export default function DeleteRecipeDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete the recipe "{recipe.title}". This
-            action cannot be undone.
+            This will permanently delete the recipe &quot;{recipe.title}&quot;.
+            This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

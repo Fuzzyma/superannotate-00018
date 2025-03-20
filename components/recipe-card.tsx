@@ -1,15 +1,27 @@
-"use client"
+"use client";
 
-import type { Recipe } from "@/types/recipe"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Clock, Heart, MoreHorizontal, Trash2, Edit } from "lucide-react"
-import Image from "next/image"
-import { useRecipes } from "@/context/recipe-context"
-import { useState } from "react"
-import { RecipeModal } from "./recipe-modal"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import type { Recipe } from "@/types/recipe";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Clock, Heart, MoreHorizontal, Trash2, Edit } from "lucide-react";
+import Image from "next/image";
+import { useRecipes } from "@/context/recipe-context";
+import { useState } from "react";
+import { RecipeModal } from "./recipe-modal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,19 +31,19 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 
 interface RecipeCardProps {
-  recipe: Recipe
+  recipe: Recipe;
 }
 
 export default function RecipeCard({ recipe }: RecipeCardProps) {
-  const { toggleFavorite, deleteRecipe } = useRecipes()
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-  const [isExpanded, setIsExpanded] = useState(false)
+  const { toggleFavorite, deleteRecipe } = useRecipes();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  const totalTime = recipe.prepTime + recipe.cookTime
+  const totalTime = recipe.prepTime + recipe.cookTime;
 
   return (
     <>
@@ -53,8 +65,12 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
             }`}
             onClick={() => toggleFavorite(recipe.id)}
           >
-            <Heart className={`h-5 w-5 ${recipe.isFavorite ? "fill-current" : ""}`} />
-            <span className="sr-only">{recipe.isFavorite ? "Remove from favorites" : "Add to favorites"}</span>
+            <Heart
+              className={`h-5 w-5 ${recipe.isFavorite ? "fill-current" : ""}`}
+            />
+            <span className="sr-only">
+              {recipe.isFavorite ? "Remove from favorites" : "Add to favorites"}
+            </span>
           </Button>
         </div>
         <CardHeader className="pb-2">
@@ -64,7 +80,9 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
                 {recipe.category}
               </Badge>
               <CardTitle>{recipe.title}</CardTitle>
-              <CardDescription className="line-clamp-2 mt-1">{recipe.description}</CardDescription>
+              <CardDescription className="line-clamp-2 mt-1">
+                {recipe.description}
+              </CardDescription>
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -90,18 +108,25 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
           <div className="flex items-center text-sm text-muted-foreground mb-4">
             <Clock className="mr-1 h-4 w-4" />
             <span>
-              {totalTime} min ({recipe.prepTime} prep, {recipe.cookTime} cook) • {recipe.servings} servings
+              {totalTime} min ({recipe.prepTime} prep, {recipe.cookTime} cook) •{" "}
+              {recipe.servings} servings
             </span>
           </div>
 
-          <div className={isExpanded ? "" : "max-h-32 overflow-hidden relative"}>
+          <div
+            className={isExpanded ? "" : "max-h-32 overflow-hidden relative"}
+          >
             <h4 className="font-medium mb-1">Ingredients:</h4>
             <ul className="list-disc list-inside text-sm space-y-1 mb-4">
-              {recipe.ingredients.slice(0, isExpanded ? undefined : 3).map((ingredient, index) => (
-                <li key={index}>{ingredient}</li>
-              ))}
+              {recipe.ingredients
+                .slice(0, isExpanded ? undefined : 3)
+                .map((ingredient, index) => (
+                  <li key={index}>{ingredient}</li>
+                ))}
               {!isExpanded && recipe.ingredients.length > 3 && (
-                <li className="list-none text-muted-foreground">+{recipe.ingredients.length - 3} more ingredients</li>
+                <li className="list-none text-muted-foreground">
+                  +{recipe.ingredients.length - 3} more ingredients
+                </li>
               )}
             </ul>
 
@@ -136,15 +161,24 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
       </Card>
 
       {isModalOpen && (
-        <RecipeModal recipe={recipe} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} mode="edit" />
+        <RecipeModal
+          recipe={recipe}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          mode="edit"
+        />
       )}
 
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the recipe "{recipe.title}". This action cannot be undone.
+              This will permanently delete the recipe &quot;{recipe.title}
+              &quot;. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -159,6 +193,5 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
         </AlertDialogContent>
       </AlertDialog>
     </>
-  )
+  );
 }
-

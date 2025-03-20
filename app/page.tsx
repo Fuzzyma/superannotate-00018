@@ -1,11 +1,10 @@
-import { Suspense } from "react";
+import AddRecipeButton from "@/components/add-recipe-button";
 import RecipeList from "@/components/recipe-list";
 import { SearchFilters } from "@/components/search-filters";
-import { RecipeProvider } from "@/context/recipe-context";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2 } from "lucide-react";
-import AddRecipeButton from "@/components/add-recipe-button";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { Suspense } from "react";
 
 export default function Home() {
   return (

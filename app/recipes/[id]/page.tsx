@@ -5,7 +5,7 @@ import { useRecipes } from "@/context/recipe-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, ArrowLeft, Edit, Trash2, Loader2 } from "lucide-react";
+import { Clock, ArrowLeft, Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { RecipeModal } from "@/components/recipe-modal";
 import DeleteRecipeDialog from "@/components/delete-recipe-dialog";
