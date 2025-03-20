@@ -149,7 +149,7 @@ export function RecipeModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="w-full sm:max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-9/10 sm:max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {mode === "add" ? "Add New Recipe" : "Edit Recipe"}
@@ -163,7 +163,7 @@ export function RecipeModal({
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-6">
                 <FormField
                   control={form.control}
