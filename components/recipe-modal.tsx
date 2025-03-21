@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/select";
 import { X, Plus } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 interface RecipeModalProps {
   recipe?: Recipe;
@@ -58,14 +59,6 @@ export function RecipeModal({
   mode,
 }: RecipeModalProps) {
   const { addRecipe, updateRecipe } = useRecipes();
-
-  // const [ingredients, setIngredients] = useState<string[]>(
-  //   recipe?.ingredients || [""]
-  // );
-
-  // const [instructions, setInstructions] = useState<string[]>(
-  //   recipe?.instructions || [""]
-  // );
 
   const form = useForm<RecipeFormData>({
     resolver: zodResolver(recipeSchema),
@@ -105,11 +98,13 @@ export function RecipeModal({
   const onSubmit = (data: RecipeFormData) => {
     if (mode === "add") {
       addRecipe(data);
+      toast("Recipe added");
     } else if (mode === "edit" && recipe) {
       updateRecipe({
         ...recipe,
         ...data,
       });
+      toast("Recipe updated");
     }
 
     form.reset();

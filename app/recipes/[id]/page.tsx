@@ -85,8 +85,8 @@ export default function RecipeDetailPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-4 ">
-                <div className="col-span-2">
+              <div className="grid grid-cols-3 gap-4">
+                <div className="col-span-3 md:col-span-2">
                   <div className="mb-8">
                     <h2 className="text-xl font-semibold mb-2">Description</h2>
                     <p className="text-muted-foreground">
@@ -105,7 +105,7 @@ export default function RecipeDetailPage() {
                     </ol>
                   </div>
                 </div>
-                <Card className="self-start">
+                <Card className="self-start col-span-3 md:col-span-1">
                   <CardContent className="pt-6">
                     <h2 className="text-xl font-semibold mb-4">Ingredients</h2>
                     <ul className="space-y-2">

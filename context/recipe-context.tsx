@@ -19,6 +19,7 @@ type RecipeContextType = {
   setSearchTerm: (term: string) => void;
   setSelectedCategory: (category: string) => void;
   categories: Category[];
+  recoverRecipe: (recipe: Recipe) => void;
 };
 
 export const CATEGORIES = [
@@ -115,6 +116,10 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  const recoverRecipe = (recipe: Recipe) => {
+    setRecipes((prev) => [...prev.filter((r) => r.id !== recipe.id), recipe]);
+  };
+
   return (
     <RecipeContext.Provider
       value={{
@@ -127,6 +132,7 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
         toggleFavorite,
         setSearchTerm,
         setSelectedCategory,
+        recoverRecipe,
         categories,
       }}
     >

@@ -1,7 +1,6 @@
 import AddRecipeButton from "@/components/add-recipe-button";
 import RecipeList from "@/components/recipe-list";
 import { SearchFilters } from "@/components/search-filters";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2 } from "lucide-react";
 import { Suspense } from "react";
@@ -18,18 +17,15 @@ export default function Home() {
             Manage your favorite recipes in one place
           </p>
         </div>
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
-        </div>
       </div>
 
       <Tabs defaultValue="all" className="w-full">
-        <TabsList className="mb-4">
+        <TabsList className="mb-4 w-full sm:w-60">
           <TabsTrigger value="all">All Recipes</TabsTrigger>
           <TabsTrigger value="favorites">Favorites</TabsTrigger>
         </TabsList>
         <TabsContent value="all" className="space-y-4">
-          <div className="flex flex-row gap-4 w-full">
+          <div className="flex flex-col sm:flex-row gap-4 w-full">
             <SearchFilters />
             <AddRecipeButton />
           </div>
@@ -38,7 +34,7 @@ export default function Home() {
           </Suspense>
         </TabsContent>
         <TabsContent value="favorites" className="space-y-4">
-          <div className="flex flex-row gap-4  w-full">
+          <div className="flex flex-col sm:flex-row gap-4 w-full">
             <SearchFilters />
             <AddRecipeButton />
           </div>

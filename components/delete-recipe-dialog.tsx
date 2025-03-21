@@ -13,6 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Recipe } from "@/types/recipe";
+import { toast } from "sonner";
 
 interface DeleteRecipeDialogProps {
   isOpen: boolean;
@@ -26,12 +27,22 @@ export default function DeleteRecipeDialog({
   recipe,
 }: DeleteRecipeDialogProps) {
   const router = useRouter();
-  const { deleteRecipe } = useRecipes();
+  const { deleteRecipe, recoverRecipe } = useRecipes();
 
   const handleDelete = () => {
+    const copy = recipe;
+
     deleteRecipe(recipe.id);
     onClose();
     router.push("/");
+
+    toast("Recipe deleted", {
+      description: "Are you sure, you wanted to do that?",
+      action: {
+        label: "Undo",
+        onClick: () => recoverRecipe(copy),
+      },
+    });
   };
 
   return (

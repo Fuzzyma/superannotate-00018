@@ -4,13 +4,20 @@ import { useRecipes } from "@/context/recipe-context";
 import { useEffect, useState } from "react";
 import type { Recipe } from "@/types/recipe";
 import RecipeCard from "./recipe-card";
+import { Button } from "./ui/button";
 
 interface RecipeListProps {
   showFavoritesOnly: boolean;
 }
 
 export default function RecipeList({ showFavoritesOnly }: RecipeListProps) {
-  const { recipes, searchTerm, selectedCategory } = useRecipes();
+  const {
+    recipes,
+    searchTerm,
+    selectedCategory,
+    setSearchTerm,
+    setSelectedCategory,
+  } = useRecipes();
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
@@ -45,11 +52,27 @@ export default function RecipeList({ showFavoritesOnly }: RecipeListProps) {
     setFilteredRecipes(result);
   }, [recipes, searchTerm, selectedCategory, showFavoritesOnly]);
 
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory("all");
+  };
+
   if (filteredRecipes.length === 0) {
     return (
-      <div className="text-center py-10">
-        <p className="text-muted-foreground">No recipes found.</p>
-        {showFavoritesOnly && (
+      <div className="flex flex-col items-center py-10">
+        {searchTerm || selectedCategory !== "all" ? (
+          <>
+            <p className="text-muted-foreground">
+              No recipes found for your criteria.
+            </p>
+            <Button className="mt-2" onClick={clearFilters}>
+              Clear filter
+            </Button>
+          </>
+        ) : (
+          <p className="text-muted-foreground">No recipes found.</p>
+        )}
+        {showFavoritesOnly && !searchTerm && selectedCategory === "all" && (
           <p className="mt-2">Try adding some recipes to your favorites!</p>
         )}
       </div>
